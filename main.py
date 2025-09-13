@@ -2,7 +2,7 @@ from config import Config
 from rigctld import RigctldConn
 from wavelog import WavelogConn
 from typing import List
-import time, traceback
+import time, traceback, socket
 
 def main():
     # Read config
@@ -24,8 +24,15 @@ def main():
     try:
         while True:
             # Get data from rigctld
-            freq = rigctld_conn.get_frequency()
-            mode = rigctld_conn.get_mode()
+            try:
+                freq = rigctld_conn.get_frequency()
+                mode = rigctld_conn.get_mode()
+            except socket.timeout:
+                if config.rigctld_allow_timeout:
+                    continue
+                else:
+                    print("ERROR: Rigctld command timed out")
+                    exit(1)
 
             # Send data to wavelog frequency or mode has changed
             if (last_freq != freq) or (last_mode != mode):

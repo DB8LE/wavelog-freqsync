@@ -11,3 +11,6 @@ api_keys = ["wl...", "wl..."] # List of API keys for all users that should have 
 [rigctl]
 host = "192.168.1.1" # Host of rigctld instance
 port = 4532 # Port of rigctld instance
+allow_timeout = false # Ignore timeout of rigcltd.Useful when you want the program to keep running,
+                      # even when your rig is not always turned on. Ideally do a test run first
+                      # to ensure everything works with your rig on, and then enable this option and restart the script.
