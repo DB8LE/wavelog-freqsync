@@ -1,5 +1,5 @@
+from typing import Self, List
 import tomllib
-from typing import Self
 
 class Config:
     def __init__(self) -> None:
@@ -8,7 +8,9 @@ class Config:
         self.print_rig_data: bool
 
         # Wavelog
+        self.wavelog_host: str
         self.wavelog_radio_name: str
+        self.wavelog_api_keys: List[str]
 
         # Rigctld
         self.rigctld_host: str
@@ -37,7 +39,9 @@ class Config:
 
         # Wavelog section
         conf_wavelog = conf_data["wavelog"]
-        self.radio_name = conf_wavelog["radio_name"]
+        self.wavelog_host = conf_wavelog["host"]
+        self.wavelog_radio_name = conf_wavelog["radio_name"]
+        self.wavelog_api_keys = conf_wavelog["api_keys"]
 
         # Rigctld section
         conf_rigctld = conf_data["rigctld"]

@@ -3,7 +3,10 @@ update_delay = 1 # Delay between rigctld queries in seconds
 print_rig_data = false # Wether to print resulting frequency and mode or not
 
 [wavelog]
+host = "http://192.168.1.1" # Host of wavelog instance (with http(s)://)
 radio_name = "MyRadio" # Radio name in Wavelog -> Harware Interfaces -> Radio
+api_keys = ["wl...", "wl..."] # List of API keys for all users that should have the frequency updated.
+                                      # All users need to have the radio configured with the same name
 
 [rigctl]
 host = "192.168.1.1" # Host of rigctld instance
