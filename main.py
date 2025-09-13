@@ -23,16 +23,24 @@ def main():
     last_mode = "N/A"
     try:
         while True:
-            # Get data from rigctld
-            try:
-                freq = rigctld_conn.get_frequency()
-                mode = rigctld_conn.get_mode()
-            except socket.timeout:
-                if config.rigctld_allow_timeout:
-                    continue
+            time.sleep(config.update_delay)
+
+            # Check if rig is off
+            is_on = rigctld_conn.get_powerstate()
+            if is_on == False:
+                # If it is off, either wait until it is back on or exit based on config.
+                if config.rigctld_allow_offline:
+                    print("Rig is off")
+                    rigctld_conn.wait_until_active()
+                    time.sleep(5) # Wait a bit for rig to boot to avoid weirdness
+                    print("Rig is back on")
                 else:
-                    print("ERROR: Rigctld command timed out")
+                    print("ERROR: Rig is off")
                     exit(1)
+
+            # Get data from rigctld
+            freq = rigctld_conn.get_frequency()
+            mode = rigctld_conn.get_mode()
 
             # Send data to wavelog frequency or mode has changed
             if (last_freq != freq) or (last_mode != mode):
@@ -46,8 +54,6 @@ def main():
                 
                 last_freq = freq
                 last_mode = mode
-            
-            time.sleep(config.update_delay)
     except KeyboardInterrupt:
         print("Caught keyboard interrupt, shutting down.")
     except Exception as e:

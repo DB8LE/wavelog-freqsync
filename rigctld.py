@@ -1,10 +1,23 @@
-import socket
+import socket, time
 
 class RigctldConn:
     def __init__(self, host: str, port: int):
         # Try to connect to provided host
+        self.host = (host, port)
+        self._connect()
+    
+    def _connect(self):
+        """Connecet to rigctld. Closes and reopens socket if its already connected"""
+
+        # Close socket if it has been defined already
         try:
-            self.socket = socket.create_connection((host, port), timeout=3)
+            self.socket.close()
+        except AttributeError:
+            pass
+
+        # Create socket
+        try:
+            self.socket = socket.create_connection(self.host, timeout=3)
         except Exception as e:
             print("ERROR: Failed to connect to rigctld.", e)
             exit(1)
@@ -25,7 +38,35 @@ class RigctldConn:
         else:
             response = ""
 
+        time.sleep(0.1) # Wait a bit to force some wait between commands
+
         return response
+    
+    def wait_until_active(self):
+        """Wait until rig reports that it is on using its powerstate"""
+
+        while True:
+            is_on = self.get_powerstate()
+
+            if is_on:
+                self._connect() # Reconnect socket to avoid weirdness
+                return
+            
+            # Wait one second to avoid spamming rigctl if powerstate was zero instead of timeout
+            time.sleep(1)
+
+    def get_powerstate(self) -> bool:
+        """Get powerstate of rig (true = on). May require timeout to be hit on some rigs."""
+
+        is_on = False
+        try:
+            response = self._send_command("\\get_powerstat")
+            if response == "1": # Some rigs will return zero while off, while others will cause a timeout
+                is_on = True
+        except socket.timeout:
+            is_on = False
+
+        return is_on
     
     def get_frequency(self) -> int:
         """Get frequency from connected rigctld instance"""
