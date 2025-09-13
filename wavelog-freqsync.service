@@ -1,0 +1,15 @@
+[Unit]
+Description=Wavelog Frequency Synchronization
+After=your_rigctld_service.service
+Requires=your_rigctld_service.service
+
+[Service]
+ExecStart=python3 main.py
+Restart=always
+RestartSec=120
+WorkingDirectory=/wherever/you/installed/this/script/wavelog-freqsync
+User=your_user
+SyslogIdentifier=wavelog-freqsync
+
+[Install]
+WantedBy=multi-user.target
