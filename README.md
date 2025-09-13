@@ -1,6 +1,6 @@
 # Wavelog Frequency Sync
 
-Automatically syncronize the frequency from a rigctl instance to wavelog.
+Automatically synchronize the frequency from a rigctl instance to wavelog.
 
 ## Installing
 
