@@ -2,6 +2,10 @@
 
 Automatically synchronize the frequency from a rigctld instance to wavelog.
 
+## Requirements
+
+The only requirement is python3-requests
+
 ## Installing
 
 First, copy config.example.toml to config.toml and edit the values in the file.
