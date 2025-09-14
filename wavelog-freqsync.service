@@ -4,12 +4,13 @@ After=your_rigctld_service.service
 Requires=your_rigctld_service.service
 
 [Service]
-ExecStart=python3 main.py
+ExecStart=python3 -u main.py
 Restart=always
 RestartSec=120
 WorkingDirectory=/wherever/you/installed/this/script/wavelog-freqsync
 User=your_user
 SyslogIdentifier=wavelog-freqsync
+StandardOutput=journal
 
 [Install]
 WantedBy=multi-user.target
