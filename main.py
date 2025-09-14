@@ -2,7 +2,7 @@ from config import Config
 from rigctld import RigctldConn
 from wavelog import WavelogConn
 from typing import List
-import time, traceback, socket
+import time, traceback
 
 def main():
     # Read config
@@ -18,9 +18,10 @@ def main():
     for api_key in config.wavelog_api_keys:
         wavelog_conns.append(WavelogConn(config.wavelog_host, api_key))
 
-    print("Starting")
+    print("\nStarting")
     last_freq = 0
     last_mode = "N/A"
+    last_update = 0
     try:
         while True:
             time.sleep(config.update_delay)
@@ -43,7 +44,8 @@ def main():
             mode = rigctld_conn.get_mode()
 
             # Send data to wavelog frequency or mode has changed
-            if (last_freq != freq) or (last_mode != mode):
+            last_update_seconds = time.time() - last_update
+            if (last_freq != freq) or (last_mode != mode) or (last_update_seconds > config.wavelog_keepalive_sec):
                 # Print rig data if enabled
                 if config.print_rig_data:
                     print(freq, mode)
@@ -54,6 +56,7 @@ def main():
                 
                 last_freq = freq
                 last_mode = mode
+                last_update = time.time()
     except KeyboardInterrupt:
         print("Caught keyboard interrupt, shutting down.")
     except Exception as e:
