@@ -47,13 +47,6 @@ class Config:
         self.wavelog_api_keys = conf_wavelog["api_keys"]
         self.wavelog_keepalive_sec = conf_wavelog["keepalive_seconds"]
 
-        # Callback section
-        conf_callback = conf_data["callback"]
-        self.callback_enable = conf_callback["enable"]
-        self.callback_host = conf_callback["host"]
-        self.callback_port = int(conf_callback["port"])
-        self.callback_print = conf_callback["print_callback"]
-
         # Rigctld section
         conf_rigctld = conf_data["rigctld"]
         self.rigctld_host = conf_rigctld["host"]
