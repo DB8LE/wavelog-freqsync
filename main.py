@@ -43,6 +43,12 @@ def main():
             freq = rigctld_conn.get_frequency()
             mode = rigctld_conn.get_mode()
 
+            # Ignore mode responses starting with RPRT (does this happen with frequency too?)
+            # TODO: is this a good idea? does more (like restarting the socket) need to be done?
+            if mode.startswith("RPRT"):
+                print("WARNING: Got mode response "+mode+". Ignoring.")
+                continue
+
             # Send data to wavelog frequency or mode has changed
             last_update_seconds = time.time() - last_update
             if (last_freq != freq) or (last_mode != mode) or (last_update_seconds > config.wavelog_keepalive_sec):
