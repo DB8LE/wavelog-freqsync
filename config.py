@@ -18,6 +18,7 @@ class Config:
         self.rigctld_host: str
         self.rigctld_port: int
         self.rigctld_allow_offline: bool
+        self.rigctld_boot_time: int
 
     def read_config(self) -> Self:
         """Read config.toml in current directory"""
@@ -52,5 +53,6 @@ class Config:
         self.rigctld_host = conf_rigctld["host"]
         self.rigctld_port = int(conf_rigctld["port"])
         self.rigctld_allow_offline = conf_rigctld["allow_offline"]
+        self.rigctld_boot_time = int(conf_rigctld["boot_time"])
 
         return self

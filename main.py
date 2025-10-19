@@ -28,12 +28,12 @@ def main():
 
             # Check if rig is off
             is_on = rigctld_conn.get_powerstate()
-            if is_on == False:
+            if not is_on:
                 # If it is off, either wait until it is back on or exit based on config.
                 if config.rigctld_allow_offline:
                     print("Rig is off")
                     rigctld_conn.wait_until_active()
-                    time.sleep(5) # Wait a bit for rig to boot to avoid weirdness
+                    time.sleep(config.rigctld_boot_time) # Wait a bit for rig to boot to avoid weirdness
                     print("Rig is back on")
                 else:
                     print("ERROR: Rig is off")
