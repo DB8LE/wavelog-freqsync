@@ -12,7 +12,8 @@ class Config:
         self.wavelog_radio_name: str
         self.wavelog_api_keys: List[str]
         self.wavelog_keepalive_sec: int
-
+        self.wavelog_enable_callbacks: bool
+        self.wavelog_callback_port: int
 
         # Rigctld
         self.rigctld_host: str
@@ -47,6 +48,8 @@ class Config:
         self.wavelog_radio_name = conf_wavelog["radio_name"]
         self.wavelog_api_keys = conf_wavelog["api_keys"]
         self.wavelog_keepalive_sec = conf_wavelog["keepalive_seconds"]
+        self.wavelog_enable_callbacks = conf_wavelog["enable_callbacks"]
+        self.wavelog_callback_port = conf_wavelog["callback_port"]
 
         # Rigctld section
         conf_rigctld = conf_data["rigctld"]

@@ -10,6 +10,8 @@ api_keys = ["wl...", "wl..."] # List of API keys for all users that should have 
 keepalive_seconds = 60 # While the radio is on, a packet will be sent to wavelog every x seconds even if frequency
                        # or mode hasn't changed to make sure wavelog knows the radio is still on.
                        # Make sure this is lower than the setting in wavelog under Admin -> Global Options -> Radios -> Timeout
+enable_callbacks = true # Wether to enable setting the rig frequency via wavelog callbacks
+callback_port = 54321 # Port of the callback address configured for a hardware interface
 
 [rigctld]
 host = "192.168.1.1" # Host of rigctld instance

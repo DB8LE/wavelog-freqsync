@@ -83,3 +83,13 @@ class RigctldConn:
         response = self._send_command("m")
 
         return response
+    
+    def set_frequency(self, frequency: int):
+        """Set rig frequency"""
+
+        self._send_command("F "+str(frequency))
+
+    def set_mode(self, mode: str):
+        """Set rig mode"""
+
+        self._send_command("M "+mode)
