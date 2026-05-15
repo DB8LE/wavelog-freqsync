@@ -12,6 +12,9 @@ First, copy config.example.toml to config.toml and edit the values in the file.
 
 Then make sure you have rigctld running and run `python3 main.py`
 
+> [!IMPORTANT]
+> Recent wavelog versions seem to use HTTPS for callbacks, even if HTTP is defined in the callback URL. To fix this, use a reverse proxy that provides an HTTPS frontend to wavelog-freqsync.
+
 ### SystemD service
 
 To install the systemd service, follow these steps:
