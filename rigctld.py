@@ -92,4 +92,4 @@ class RigctldConn:
     def set_mode(self, mode: str):
         """Set rig mode"""
 
-        self._send_command("M "+mode)
+        self._send_command("M "+mode+" -1")
