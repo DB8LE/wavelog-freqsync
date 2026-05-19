@@ -62,7 +62,7 @@ def main():
 
                 # Clear callback queue for next run and resart loop
                 wavelog_callback_queue.clear()
-                
+
                 time.sleep(0.1) # sleep a little for safety
                 continue
 
@@ -71,13 +71,13 @@ def main():
 
             # Get data from rigctld
             callback_freq = rigctld_conn.get_frequency()
+            if callback_freq is None:
+                print("ERROR: Got invalid response from rig while requesting frequency")
+                continue # Restart from beginning of loop
             callback_mode = rigctld_conn.get_mode()
-
-            # Ignore mode responses starting with RPRT (does this happen with frequency too?)
-            # TODO: is this a good idea? does more (like restarting the socket) need to be done?
-            if callback_mode.startswith("RPRT"):
-                print("WARNING: Got mode response "+callback_mode+". Ignoring.")
-                continue
+            if callback_mode is None:
+                print("ERROR: Got invalid response from rig while requesting frequency")
+                continue # Restart from beginning of loop
 
             # Send data to wavelog frequency or mode has changed
             last_update_seconds = time.time() - last_update
