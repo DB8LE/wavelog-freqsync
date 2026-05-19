@@ -23,7 +23,7 @@ class RigctldConn:
             print("ERROR: Failed to connect to rigctld.", e)
             exit(1)
 
-    def _send_command(self, command: str) -> Dict[str, str]:
+    def _send_command(self, command: str, allow_timeout: bool = False) -> Dict[str, str]:
         """Send command to connected rigctld instance and return first line of response"""
 
         # Send command
@@ -34,8 +34,11 @@ class RigctldConn:
         # Get response
         try:
             response = self.socket.recv(4096).decode("ascii")
-        except TimeoutError:
-            print("ERROR: Rigctld command timed out")
+        except TimeoutError as e:
+            if allow_timeout:
+                raise e
+
+            print(f"ERROR: Rigctld command timed out '+{command}'")
             return {}
         response = response.splitlines()
 
@@ -84,7 +87,7 @@ class RigctldConn:
 
         is_on = False
         try:
-            response = self._send_command("\\get_powerstat")
+            response = self._send_command("\\get_powerstat", allow_timeout=True)
             if response.get("power_status") == "1": # Some rigs will return zero while off, while others will cause a timeout
                 is_on = True
         except socket.timeout:
